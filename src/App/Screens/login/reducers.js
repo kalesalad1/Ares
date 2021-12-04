@@ -2,7 +2,6 @@ import initialState from './initialState'
 import {
   SET_EMAIL,
   SET_PASSWORD,
-  
 } from './types'
 
 export default (state = initialState, { type, payload }) => {
