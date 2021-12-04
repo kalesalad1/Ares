@@ -37,3 +37,32 @@ export const LogUserIn = () => async (dispatch, getState) => {
   console.log(error)
   }
 }
+
+export const UserSignUp = () => async (dispatch, getState) => {
+  try {
+
+    const {
+      signupReducer: { email,password,username, birthday,firstname,lastname },
+     
+    } = getState()
+  
+
+
+    //initialize database
+    const firestore = getFirestore()
+
+    //query database 
+    const res = await firestore.collection('cities').add({
+      email: email,
+      password: password,
+      username: username,
+      birthday: birthday,
+      firstname: firstname,
+      lastname: lastname,
+    })
+    console.log('Added document with ID: ', res.id);
+
+} catch (error) {
+  console.log(error)
+  }
+}
