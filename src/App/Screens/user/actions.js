@@ -15,7 +15,7 @@ export const LogUserIn = () => async (dispatch, getState) => {
       loginReducer: { email },
       loginReducer: { password }
     } = getState()
-  
+  console.log({email,password})
 
 
     //initialize database
@@ -42,8 +42,7 @@ export const UserSignUp = () => async (dispatch, getState) => {
   try {
 
     const {
-      signupReducer: { email,password,username, birthday,firstname,lastname },
-     
+      signupReducer: { email,password,firstname,lastname },
     } = getState()
   
 
@@ -52,16 +51,25 @@ export const UserSignUp = () => async (dispatch, getState) => {
     const firestore = getFirestore()
 
     //query database 
-    const res = await firestore.collection('cities').add({
+    const res = await firestore.collection('Users').add({
       email: email,
       password: password,
-      username: username,
-      birthday: birthday,
       firstname: firstname,
       lastname: lastname,
     })
     console.log('Added document with ID: ', res.id);
 
+    const querySnapshot = await firestore.get({
+      collection: "Users",
+      where: [['email', '==', email]],
+      where: [['password', '==', password]]
+    });
+
+    querySnapshot.forEach(doc => {
+      let data = doc.data()
+      dispatch(setCurrentUser(data))
+    });
+    
 } catch (error) {
   console.log(error)
   }

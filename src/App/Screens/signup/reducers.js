@@ -5,7 +5,6 @@ import {
   SET_FIRSTNAME,
   SET_LASTNAME,
   SET_USERNAME,
-  SET_BIRTHDAY,
 
 } from './types'
 
@@ -25,9 +24,6 @@ export default (state = initialState, { type, payload }) => {
     }
     case SET_USERNAME:{
         return {...state, username: payload}
-    }
-    case SET_BIRTHDAY:{
-        return {...state, password: payload}
     }
     default: {
       return state
