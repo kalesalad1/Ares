@@ -1,3 +1,6 @@
+import { getFirestore } from "redux-firestore"
+
+
 import {
     SET_MEDICATIONS,
     SET_SELECTED_MED,
@@ -32,30 +35,66 @@ import {
     try {
   
       const {
-        medReducer: { atTimesToTake,name,takeFrequency },
+        medicationsReducer: {newMedication:{ atTimesToTake,name,takeFrequency }},
         userReducer: {currentUser}
       } = getState()
 
+      console.log({atTimesToTake, name, takeFrequency})
+
       //initialize database
-      const firestore = getFirestore()
+      // const firestore = getFirestore()
   
-      //query database 
-      const res = await firestore.collection('Meds').add({
-        email: currentUser.email,
-        name: name,
-        atTimesToTake: atTimesToTake,
-        takeFrequency: takeFrequency,
-      })
+      // //query database 
+      // const res = await firestore.collection('Medications').add({
+      //   email: currentUser.email,
+      //   name: name,
+      //   atTimesToTake: atTimesToTake,
+      //   takeFrequency: takeFrequency,
+      // })
         
-      const querySnapshot = await firestore.get({
-        collection: "Meds",
-        where: [['email', '==', email]],
-      });
+      // const querySnapshot = await firestore.get({
+      //   collection: "Medications",
+      //   where: [['email', '==', email]],
+      // });
   
-      querySnapshot.forEach(doc => {
-        let data = doc.data()
-        dispatch(SetMedications(data))
-      });
+      // querySnapshot.forEach(doc => {
+      //   let data = doc.data()
+      //   dispatch(SetMedications(data))
+      // });
+      
+  } catch (error) {
+    console.log(error)
+    }
+  }
+  
+  export const DeleteMedication = (name) => async (dispatch, getState) => {
+    try {
+  
+      const {
+        userReducer: {currentUser:{email}}
+      } = getState()
+      console.log({name, email})
+
+      //initialize database
+      // const firestore = getFirestore()
+  
+      // //query database 
+      // const res = await firestore.collection('Medications').add({
+      //   email: currentUser.email,
+      //   name: name,
+      //   atTimesToTake: atTimesToTake,
+      //   takeFrequency: takeFrequency,
+      // })
+        
+      // const querySnapshot = await firestore.get({
+      //   collection: "Medications",
+      //   where: [['email', '==', email]],
+      // });
+  
+      // querySnapshot.forEach(doc => {
+      //   let data = doc.data()
+      //   dispatch(SetMedications(data))
+      // });
       
   } catch (error) {
     console.log(error)
