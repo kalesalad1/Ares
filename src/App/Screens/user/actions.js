@@ -57,7 +57,6 @@ export const UserSignUp = () => async (dispatch, getState) => {
       firstname: firstname,
       lastname: lastname,
     })
-    console.log('Added document with ID: ', res.id);
 
     const querySnapshot = await firestore.get({
       collection: "Users",
