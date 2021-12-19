@@ -33,28 +33,77 @@ export const CreateNewMed = () => async (dispatch, getState) => {
       userReducer: {
         currentUser
       }
-    } = getState();
-    console.log({
-      atTimesToTake,
-      name,
-      takeFrequency
-    }); //initialize database
-    // const firestore = getFirestore()
-    // //query database 
-    // const res = await firestore.collection('Medications').add({
-    //   email: currentUser.email,
-    //   name: name,
-    //   atTimesToTake: atTimesToTake,
-    //   takeFrequency: takeFrequency,
-    // })
-    // const querySnapshot = await firestore.get({
-    //   collection: "Medications",
-    //   where: [['email', '==', email]],
-    // });
-    // querySnapshot.forEach(doc => {
-    //   let data = doc.data()
-    //   dispatch(SetMedications(data))
-    // });
+    } = getState(); // initialize database
+
+    const firestore = getFirestore();
+    const returnArray = []; //query database 
+
+    const res = await firestore.collection('Medications').add({
+      email: currentUser.email,
+      name: name,
+      atTimesToTake: atTimesToTake,
+      takeFrequency: takeFrequency
+    });
+    const querySnapshot = await firestore.get({
+      collection: "Medications",
+      where: [['email', '==', currentUser.email]]
+    });
+    querySnapshot.forEach(doc => {
+      let data = doc.data();
+      returnArray.push(data);
+    });
+    dispatch(SetMedications(returnArray));
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const GetMedications = () => async (dispatch, getState) => {
+  try {
+    const {
+      userReducer: {
+        currentUser
+      }
+    } = getState(); // initialize database
+
+    const firestore = getFirestore();
+    const returnArray = [];
+    const querySnapshot = await firestore.get({
+      collection: "Medications",
+      where: [['email', '==', currentUser.email]]
+    });
+    querySnapshot.forEach(doc => {
+      let data = doc.data();
+      returnArray.push(data);
+    });
+    dispatch(SetMedications(returnArray));
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const DeleteMedication = name => async (dispatch, getState) => {
+  try {
+    const {
+      userReducer: {
+        currentUser: {
+          email
+        }
+      }
+    } = getState(); //initialize database
+
+    const firestore = getFirestore(); //query database 
+
+    let deleteId = '';
+    const snap = await firestore.get({
+      collection: "Medications",
+      where: [['email', '==', email]],
+      where: [['name', '==', name]]
+    });
+    snap.forEach(doc => {
+      console.log(doc.id);
+      deleteId = doc.id;
+    });
+    const res = await firestore.collection('Medications').doc(deleteId).delete();
+    dispatch(GetMedications());
   } catch (error) {
     console.log(error);
   }
