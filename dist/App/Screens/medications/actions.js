@@ -1,5 +1,5 @@
 import { getFirestore } from "redux-firestore";
-import { SET_MEDICATIONS, SET_SELECTED_MED, SET_NEW_MED_NAME, SET_NEW_MED_TIMES, SET_NEW_MED_FREQUENCY } from './types';
+import { SET_MEDICATIONS, SET_SELECTED_MED, SET_NEW_MED_NAME, SET_NEW_MED_TIMES, SET_NEW_MED_FREQUENCY, SET_DAYS } from './types';
 export const SetMedications = medications => ({
   type: SET_MEDICATIONS,
   payload: medications
@@ -7,6 +7,10 @@ export const SetMedications = medications => ({
 export const SetSelectedMed = medication => ({
   type: SET_SELECTED_MED,
   payload: medication
+});
+export const SetDays = days => ({
+  type: SET_DAYS,
+  payload: days
 });
 export const SetNewMedName = name => ({
   type: SET_NEW_MED_NAME,
@@ -27,13 +31,18 @@ export const CreateNewMed = () => async (dispatch, getState) => {
         newMedication: {
           atTimesToTake,
           name,
-          takeFrequency
+          takeFrequency,
+          days
         }
       },
       userReducer: {
         currentUser
       }
-    } = getState(); // initialize database
+    } = getState();
+    console.log({
+      days,
+      atTimesToTake
+    }); // initialize database
 
     const firestore = getFirestore();
     const returnArray = []; //query database 
@@ -42,7 +51,8 @@ export const CreateNewMed = () => async (dispatch, getState) => {
       email: currentUser.email,
       name: name,
       atTimesToTake: atTimesToTake,
-      takeFrequency: takeFrequency
+      takeFrequency: takeFrequency,
+      days: days
     });
     const querySnapshot = await firestore.get({
       collection: "Medications",

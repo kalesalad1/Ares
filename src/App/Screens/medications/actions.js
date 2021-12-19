@@ -7,6 +7,7 @@ import {
     SET_NEW_MED_NAME,
     SET_NEW_MED_TIMES,
     SET_NEW_MED_FREQUENCY,
+    SET_DAYS,
   } from './types'
   
   export const SetMedications = medications => ({
@@ -16,6 +17,10 @@ import {
   export const SetSelectedMed = medication => ({
       type: SET_SELECTED_MED,
       payload: medication,
+  })
+  export const SetDays = days => ({
+    type: SET_DAYS,
+    payload: days
   })
   export const SetNewMedName = name => ({
     type: SET_NEW_MED_NAME,
@@ -35,10 +40,9 @@ import {
     try {
   
       const {
-        medicationsReducer: {newMedication:{ atTimesToTake,name,takeFrequency }},
+        medicationsReducer: {newMedication:{ atTimesToTake,name,takeFrequency, days }},
         userReducer: {currentUser}
       } = getState()
-
 
      // initialize database
       const firestore = getFirestore()
@@ -50,6 +54,7 @@ import {
         name: name,
         atTimesToTake: atTimesToTake,
         takeFrequency: takeFrequency,
+        days: days
       })
         
       const querySnapshot = await firestore.get({
@@ -114,7 +119,6 @@ import {
         where: [['name', '==', name ]]
       });
       snap.forEach(doc => {
-        console.log(doc.id);
         deleteId = doc.id
       });
       

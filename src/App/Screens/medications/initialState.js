@@ -5,5 +5,6 @@ export default {
         name:null,
         atTimesToTake:[],
         takeFrequency: null,
+        days:[],
     },
 }

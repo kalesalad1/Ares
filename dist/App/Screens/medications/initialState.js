@@ -4,6 +4,7 @@ export default {
   newMedication: {
     name: null,
     atTimesToTake: [],
-    takeFrequency: null
+    takeFrequency: null,
+    days: []
   }
 };
