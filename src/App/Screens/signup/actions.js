@@ -3,8 +3,6 @@ import {
     SET_PASSWORD,
     SET_FIRSTNAME,
     SET_LASTNAME,
-    SET_USERNAME,
-    SET_BIRTHDAY,
   } from './types'
   
   export const SetEmail = email => ({
@@ -23,11 +21,4 @@ import {
     type: SET_LASTNAME,
     payload: lastname,
   })
-  export const SetUserName = username => ({
-    type: SET_USERNAME,
-    payload: username,
-  })
-  export const SetBirthday = birthday => ({
-    type: SET_BIRTHDAY,
-    payload: birthday,
-  })
+

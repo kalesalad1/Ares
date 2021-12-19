@@ -14,10 +14,46 @@ export const LogUserIn = () => async (dispatch, getState) => {
       loginReducer: {
         password
       }
+    } = getState();
+    console.log({
+      email,
+      password
+    }); //initialize database
+
+    const firestore = getFirestore(); //query database 
+
+    const querySnapshot = await firestore.get({
+      collection: "Users",
+      where: [['email', '==', email]],
+      where: [['password', '==', password]]
+    });
+    querySnapshot.forEach(doc => {
+      let data = doc.data();
+      dispatch(setCurrentUser(data));
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const UserSignUp = () => async (dispatch, getState) => {
+  try {
+    const {
+      signupReducer: {
+        email,
+        password,
+        firstname,
+        lastname
+      }
     } = getState(); //initialize database
 
     const firestore = getFirestore(); //query database 
 
+    const res = await firestore.collection('Users').add({
+      email: email,
+      password: password,
+      firstname: firstname,
+      lastname: lastname
+    });
     const querySnapshot = await firestore.get({
       collection: "Users",
       where: [['email', '==', email]],
