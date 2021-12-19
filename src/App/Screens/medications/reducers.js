@@ -5,6 +5,7 @@ import {
     SET_NEW_MED_NAME,
     SET_NEW_MED_TIMES,
     SET_NEW_MED_FREQUENCY,
+    SET_DAYS
 } from './types'
 
 export default (state = initialState, { type, payload }) => {
@@ -29,6 +30,13 @@ export default (state = initialState, { type, payload }) => {
             }
         }
     }
+    case SET_DAYS: {
+      return {...state, newMedication:{
+          ...state.newMedication,
+          days: payload
+          }
+      }
+  }
     case SET_NEW_MED_FREQUENCY:{
         return {...state, newMedication:{
             ...state.newMedication,

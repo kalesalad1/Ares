@@ -3,4 +3,4 @@ export default {
     password: null,
     firstname: null,
     lastname: null,
-    }
+    } 

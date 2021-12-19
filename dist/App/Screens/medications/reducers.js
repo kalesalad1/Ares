@@ -1,5 +1,5 @@
 import initialState from './initialState';
-import { SET_MEDICATIONS, SET_SELECTED_MED, SET_NEW_MED_NAME, SET_NEW_MED_TIMES, SET_NEW_MED_FREQUENCY } from './types';
+import { SET_MEDICATIONS, SET_SELECTED_MED, SET_NEW_MED_NAME, SET_NEW_MED_TIMES, SET_NEW_MED_FREQUENCY, SET_DAYS } from './types';
 export default ((state = initialState, {
   type,
   payload
@@ -33,6 +33,15 @@ export default ((state = initialState, {
         return { ...state,
           newMedication: { ...state.newMedication,
             atTimesToTake: payload
+          }
+        };
+      }
+
+    case SET_DAYS:
+      {
+        return { ...state,
+          newMedication: { ...state.newMedication,
+            days: payload
           }
         };
       }
