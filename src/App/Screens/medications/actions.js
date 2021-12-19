@@ -39,29 +39,30 @@ import {
         userReducer: {currentUser}
       } = getState()
 
-      console.log({atTimesToTake, name, takeFrequency})
+      console.log({atTimesToTake, name, takeFrequency, email:currentUser.email})
 
-      //initialize database
-      // const firestore = getFirestore()
+     // initialize database
+      const firestore = getFirestore()
+      const returnArray = []
   
-      // //query database 
-      // const res = await firestore.collection('Medications').add({
-      //   email: currentUser.email,
-      //   name: name,
-      //   atTimesToTake: atTimesToTake,
-      //   takeFrequency: takeFrequency,
-      // })
+      //query database 
+      const res = await firestore.collection('Medications').add({
+        email: currentUser.email,
+        name: name,
+        atTimesToTake: atTimesToTake,
+        takeFrequency: takeFrequency,
+      })
         
-      // const querySnapshot = await firestore.get({
-      //   collection: "Medications",
-      //   where: [['email', '==', email]],
-      // });
+      const querySnapshot = await firestore.get({
+        collection: "Medications",
+        where: [['email', '==', currentUser.email]],
+      });
   
-      // querySnapshot.forEach(doc => {
-      //   let data = doc.data()
-      //   dispatch(SetMedications(data))
-      // });
-      
+      querySnapshot.forEach(doc => {
+        let data = doc.data()
+        returnArray.push(data)
+      });
+      dispatch(SetMedications(returnArray))
   } catch (error) {
     console.log(error)
     }
@@ -76,25 +77,38 @@ import {
       console.log({name, email})
 
       //initialize database
-      // const firestore = getFirestore()
+      const firestore = getFirestore()
   
-      // //query database 
-      // const res = await firestore.collection('Medications').add({
-      //   email: currentUser.email,
-      //   name: name,
-      //   atTimesToTake: atTimesToTake,
-      //   takeFrequency: takeFrequency,
-      // })
-        
-      // const querySnapshot = await firestore.get({
-      //   collection: "Medications",
-      //   where: [['email', '==', email]],
-      // });
-  
-      // querySnapshot.forEach(doc => {
-      //   let data = doc.data()
-      //   dispatch(SetMedications(data))
-      // });
+      //query database 
+      let deleteId = ''
+     
+      const deleteGet = await firestore.get({
+        collection: "Medications",
+        where: [['email', '==', email]],
+        where: [['name', '==', name]]
+      });
+    
+         deleteId = deleteGet.id
+ 
+      
+
+      const res = await firestore.collection('Medications').doc(deleteId).delete({
+       
+        where: [['email', '==', email]],
+        where: [['name', '==', name]]
+      });
+      
+
+      const querySnapshot = await firestore.get({
+        collection: "Medications",
+        where: [['email', '==', email]],
+      });
+
+
+      querySnapshot.forEach(doc => {
+        let data = doc.data()
+        dispatch(SetMedications(data))
+      });
       
   } catch (error) {
     console.log(error)
