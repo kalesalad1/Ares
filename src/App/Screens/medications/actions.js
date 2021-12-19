@@ -39,7 +39,6 @@ import {
         userReducer: {currentUser}
       } = getState()
 
-      console.log({atTimesToTake, name, takeFrequency, email:currentUser.email})
 
      // initialize database
       const firestore = getFirestore()
@@ -52,6 +51,34 @@ import {
         atTimesToTake: atTimesToTake,
         takeFrequency: takeFrequency,
       })
+        
+      const querySnapshot = await firestore.get({
+        collection: "Medications",
+        where: [['email', '==', currentUser.email]],
+      });
+  
+      querySnapshot.forEach(doc => {
+        let data = doc.data() 
+        returnArray.push(data)
+      });
+      dispatch(SetMedications(returnArray))
+  } catch (error) {
+    console.log(error)
+    }
+  }
+
+  export const GetMedications = () => async (dispatch, getState) => {
+    try {
+  
+      const {
+        userReducer: {currentUser}
+      } = getState()
+
+
+     // initialize database
+      const firestore = getFirestore()
+      const returnArray = []
+  
         
       const querySnapshot = await firestore.get({
         collection: "Medications",
@@ -74,7 +101,6 @@ import {
       const {
         userReducer: {currentUser:{email}}
       } = getState()
-      console.log({name, email})
 
       //initialize database
       const firestore = getFirestore()
@@ -82,33 +108,19 @@ import {
       //query database 
       let deleteId = ''
      
-      const deleteGet = await firestore.get({
+      const snap = await firestore.get({
         collection: "Medications",
         where: [['email', '==', email]],
-        where: [['name', '==', name]]
+        where: [['name', '==', name ]]
       });
-    
-         deleteId = deleteGet.id
- 
-      
-
-      const res = await firestore.collection('Medications').doc(deleteId).delete({
-       
-        where: [['email', '==', email]],
-        where: [['name', '==', name]]
+      snap.forEach(doc => {
+        console.log(doc.id);
+        deleteId = doc.id
       });
       
+      const res = await firestore.collection('Medications').doc(deleteId).delete();
 
-      const querySnapshot = await firestore.get({
-        collection: "Medications",
-        where: [['email', '==', email]],
-      });
-
-
-      querySnapshot.forEach(doc => {
-        let data = doc.data()
-        dispatch(SetMedications(data))
-      });
+      dispatch(GetMedications())
       
   } catch (error) {
     console.log(error)
