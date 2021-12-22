@@ -44,8 +44,10 @@ import {
         userReducer: {currentUser}
       } = getState()
 
-     // initialize database
-      const firestore = getFirestore()
+     // initialize database     
+  
+    
+     const firestore = getFirestore()
       const returnArray = []
   
       //query database 
@@ -67,6 +69,10 @@ import {
         returnArray.push(data)
       });
       dispatch(SetMedications(returnArray))
+      dispatch(SetNewMedFrequency())
+      dispatch(SetNewMedName())
+      dispatch(SetNewMedTimes([]))
+      dispatch(SetDays([]))
   } catch (error) {
     console.log(error)
     }

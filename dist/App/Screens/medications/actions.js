@@ -38,11 +38,7 @@ export const CreateNewMed = () => async (dispatch, getState) => {
       userReducer: {
         currentUser
       }
-    } = getState();
-    console.log({
-      days,
-      atTimesToTake
-    }); // initialize database
+    } = getState(); // initialize database     
 
     const firestore = getFirestore();
     const returnArray = []; //query database 
@@ -63,6 +59,10 @@ export const CreateNewMed = () => async (dispatch, getState) => {
       returnArray.push(data);
     });
     dispatch(SetMedications(returnArray));
+    dispatch(SetNewMedFrequency());
+    dispatch(SetNewMedName());
+    dispatch(SetNewMedTimes([]));
+    dispatch(SetDays([]));
   } catch (error) {
     console.log(error);
   }
@@ -109,7 +109,6 @@ export const DeleteMedication = name => async (dispatch, getState) => {
       where: [['name', '==', name]]
     });
     snap.forEach(doc => {
-      console.log(doc.id);
       deleteId = doc.id;
     });
     const res = await firestore.collection('Medications').doc(deleteId).delete();
