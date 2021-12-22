@@ -38,11 +38,7 @@ export const CreateNewMed = () => async (dispatch, getState) => {
       userReducer: {
         currentUser
       }
-    } = getState();
-    console.log({
-      days,
-      atTimesToTake
-    }); // initialize database
+    } = getState(); // initialize database
 
     const firestore = getFirestore();
     const returnArray = []; //query database 
@@ -62,11 +58,11 @@ export const CreateNewMed = () => async (dispatch, getState) => {
       let data = doc.data();
       returnArray.push(data);
     });
-    dispatch(SetMedications(returnArray))
-    dispatch(SetNewMedName(""))
-    dispatch(SetDays([]))
-    dispatch(SetNewMedFrequency(""))
-    dispatch(SetNewMedTimes([]))
+    dispatch(SetMedications(returnArray));
+    dispatch(SetDays([]));
+    dispatch(SetNewMedFrequency(''));
+    dispatch(SetNewMedName(''));
+    dispatch(SetNewMedTimes([]));
   } catch (error) {
     console.log(error);
   }
@@ -113,7 +109,6 @@ export const DeleteMedication = name => async (dispatch, getState) => {
       where: [['name', '==', name]]
     });
     snap.forEach(doc => {
-      console.log(doc.id);
       deleteId = doc.id;
     });
     const res = await firestore.collection('Medications').doc(deleteId).delete();

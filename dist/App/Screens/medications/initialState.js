@@ -2,10 +2,9 @@ export default {
   medications: [],
   selectedMedication: null,
   newMedication: {
-    name: "",
+    name: '',
     atTimesToTake: [],
-    takeFrequency: "",
+    takeFrequency: '',
     days: []
   }
 };
-

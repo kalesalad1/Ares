@@ -67,6 +67,12 @@ import {
         returnArray.push(data)
       });
       dispatch(SetMedications(returnArray))
+      dispatch(SetDays([]))
+      dispatch(SetNewMedFrequency(''))
+      dispatch(SetNewMedName(''))
+      dispatch(SetNewMedTimes([]))
+
+
   } catch (error) {
     console.log(error)
     }
