@@ -62,7 +62,11 @@ export const CreateNewMed = () => async (dispatch, getState) => {
       let data = doc.data();
       returnArray.push(data);
     });
-    dispatch(SetMedications(returnArray));
+    dispatch(SetMedications(returnArray))
+    dispatch(SetNewMedName(""))
+    dispatch(SetDays([]))
+    dispatch(SetNewMedFrequency(""))
+    dispatch(SetNewMedTimes([]))
   } catch (error) {
     console.log(error);
   }
